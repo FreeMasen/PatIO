@@ -6,9 +6,45 @@ Imports SimpleOAuth
 Imports System.Xml
 
 Public Class Yelpbot
-    Public names As XmlNodeList
-    Public locations As XmlNodeList
-    Public ratings As XmlNodeList
+    Private _names As XmlNodeList
+    Public Property names As XmlNodeList
+        Get
+            Return _names
+        End Get
+        Set(value As XmlNodeList)
+            _names = value
+        End Set
+    End Property
+
+    Private _locations As XmlNodeList
+    Public Property locations As XmlNodeList
+        Get
+            Return _locations
+        End Get
+        Set(value As XmlNodeList)
+            _locations = value
+        End Set
+    End Property
+
+    Private _ratings As XmlNodeList
+    Public Property ratings As XmlNodeList
+        Get
+            Return _ratings
+        End Get
+        Set(value As XmlNodeList)
+            _ratings = value
+        End Set
+    End Property
+
+    Private _images As XmlNodeList
+    Public Property images As XmlNodeList
+        Get
+            Return _images
+        End Get
+        Set(value As XmlNodeList)
+            _images = value
+        End Set
+    End Property
     Dim xml As XmlDocument = New XmlDocument
     Public zip As String
 
@@ -39,16 +75,15 @@ Public Class Yelpbot
         xml.Save("yelpexample")
     End Sub
 
-    Public Function buildURL(ByVal city As String, Optional ByVal state As String = "") As String
+    Public Function buildURL(city As String, state As String) As String
 
         Dim searchLocation As String
-        If state.Length > 0 Then
-            searchLocation = String.Format("{0}+{1}", city, state)
-        ElseIf city.Contains(" ") Then
+
+
+        If city.Contains(" ") Then
             city.Replace(" ", "+")
-        Else
-            searchLocation = city
         End If
+        searchLocation = String.Format("{0}+{1}", city, state)
 
         Return String.Format("http://api.yelp.com/v2/search?term=patio&location={0}&category_filter=restaurants&sort=2&radius_filter=1700&limit=5&output=xml", searchLocation)
 
@@ -58,7 +93,9 @@ Public Class Yelpbot
 
         names = xml.SelectNodes("//name")
         locations = xml.SelectNodes("//address")
-        ratings = xml.SelectNodes("//rating")
+        ratings = xml.SelectNodes("//rating_img_url")
+        images = xml.SelectNodes("//image_url")
+
 
     End Sub
 

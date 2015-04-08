@@ -69,14 +69,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Listing.xaml.vb">
-      <DependentUpon>Listing.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Business.vb" />
+    <Compile Include="Businesses.vb" />
+    <Compile Include="Wunderbot.vb" />
     <Compile Include="YelpBot.vb" />
-    <Page Include="Listing.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
