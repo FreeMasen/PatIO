@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="MainWindow" Height="450.666" Width="895.238" WindowStyle="ThreeDBorderWindow">
+    Title="MainWindow" Height="450.666" Width="304" WindowStyle="ThreeDBorderWindow">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -9,8 +9,8 @@
                 <GradientStop Color="#FFFFFA8B" Offset="0.86"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Label Content="When are you going out?" VerticalAlignment="Top" Margin="38,14,0,0" FontFamily="Trebuchet MS" FontSize="20" Foreground="#FF494949" HorizontalAlignment="Left"/>
-        <ComboBox x:Name="cboDate"  Text="Day" VerticalAlignment="Top" Width="120" Margin="82,77,0,0" RenderTransformOrigin="0.5,0.5" FontFamily="Trebuchet MS" FontSize="18" HorizontalAlignment="Left">
+        <Label Content="When are you going out?" VerticalAlignment="Top" Margin="32,14,36.333,0" FontFamily="Trebuchet MS" FontSize="20" Foreground="#FF494949" HorizontalAlignment="Left" HorizontalContentAlignment="Center"/>
+        <ComboBox x:Name="cboDate"  Text="Day" VerticalAlignment="Top" Width="120" Margin="85,77,0,0" RenderTransformOrigin="0.5,0.5" FontFamily="Trebuchet MS" FontSize="18" HorizontalAlignment="Left">
             <ComboBox.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFFFFA8B" Offset="0.342"/>
@@ -32,11 +32,11 @@
                 </TransformGroup>
             </ComboBox.RenderTransform>
         </ComboBox>
-        <Label Content="Where are you going out?" Margin="24,142,0,0" VerticalAlignment="Top" FontFamily="Trebuchet MS" FontSize="20" Foreground="#FF494949" Width="237" HorizontalAlignment="Left"/>
-        <TextBox x:Name="txtCity" Height="35" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Margin="38,193,0,0" FontFamily="Trebuchet MS" FontSize="18" HorizontalAlignment="Left"/>
+        <Label Content="Where are you going out?" Margin="24,132,0,0" VerticalAlignment="Top" FontFamily="Trebuchet MS" FontSize="20" Foreground="#FF494949" Width="237" HorizontalAlignment="Left"/>
+        <TextBox x:Name="txtCity" Height="35" TextWrapping="Wrap" VerticalAlignment="Top" Width="208" Margin="38,181,0,0" FontFamily="Trebuchet MS" FontSize="18" HorizontalAlignment="Left" Text="minneapolis"/>
         <Label VerticalAlignment="Top" Margin="0, 245,0,0" FontFamily="Trebuchet MS" FontSize="18" HorizontalAlignment="Left"/>
 
-        <ComboBox x:Name="cboState" Text="State" VerticalAlignment="Top" Width="120" Margin="85,266,0,0" RenderTransformOrigin="0.5,0.5" FontFamily="Trebuchet MS" FontSize="18" HorizontalAlignment="Left">
+        <ComboBox x:Name="cboState" Text="State" VerticalAlignment="Top" Width="120" Margin="85,256,0,0" RenderTransformOrigin="0.5,0.5" FontFamily="Trebuchet MS" FontSize="18" HorizontalAlignment="Left">
             <ComboBox.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FEFCF895" Offset="0.342"/>
@@ -58,22 +58,24 @@
                 </TransformGroup>
             </ComboBox.RenderTransform>
         </ComboBox>
-        <Button x:Name="btnSubmit" Content="Should we sit outside?" VerticalAlignment="Top" Width="222" Margin="31,345,0,0" Height="45" FontFamily="Trebuchet MS" FontSize="20" Background="#E538E5DB" Foreground="#FF494949" BorderBrush="White" HorizontalAlignment="Left"/>
+        <Button x:Name="btnSubmit" Content="Should we sit outside?" VerticalAlignment="Top" Width="222" Margin="36,351,0,0" Height="45" FontFamily="Trebuchet MS" FontSize="20" Background="#E538E5DB" Foreground="#FF494949" BorderBrush="White" HorizontalAlignment="Left"/>
         <Label Content="First Pick" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="308,33,0,0" FontSize="18" FontFamily="Trebuchet MS" Foreground="#FF494949"/>
         <Label x:Name="lblName1" Content="Business 1 Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="308,167,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
         <Label x:Name="lblAddress1" Content="Business 1 Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="308,216,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
-        <Label Content="Second Pick" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="498,33,0,0" FontSize="18" FontFamily="Trebuchet MS" Foreground="#FF494949"/>
-        <Label x:Name="lblName2" Content="Business 2 Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="498,167,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
-        <Label x:Name="lblAddress2" Content="Business 2 Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="498,216,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
-        <Label Content="Thrid Pick" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="692,33,0,0" FontSize="18" FontFamily="Trebuchet MS" Foreground="#FF494949"/>
-        <Label x:Name="lblName3" Content="Business 3 Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="692,167,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
-        <Label x:Name="lblAddress3" Content="Business 3 Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="692,216,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
+        <Label Content="Second Pick" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="550,33,0,0" FontSize="18" FontFamily="Trebuchet MS" Foreground="#FF494949"/>
+        <Label x:Name="lblName2" Content="Business 2 Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="550,167,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
+        <Label x:Name="lblAddress2" Content="Business 2 Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="550,216,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
+        <Label Content="Thrid Pick" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="820,33,0,0" FontSize="18" FontFamily="Trebuchet MS" Foreground="#FF494949"/>
+        <Label x:Name="lblName3" Content="Business 3 Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="820,167,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
+        <Label x:Name="lblAddress3" Content="Business 3 Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="820,216,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
         <Image x:Name="imgBiz1" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="308,64,0,0"/>
-        <Image x:Name="imgBiz2" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="498,67,0,0"/>
-        <Image x:Name="imgBiz3" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="692,62,0,0"/>
+        <Image x:Name="imgBiz2" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="550,67,0,0"/>
+        <Image x:Name="imgBiz3" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="820,62,0,0"/>
         <Image x:Name="imgRating" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="159" Margin="308,252,0,0"/>
-        <Image x:Name="imgRating1" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="159" Margin="498,252,0,0"/>
-        <Image x:Name="imgRating2" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="159" Margin="692,252,0,0"/>
+        <Image x:Name="imgRating1" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="159" Margin="550,252,0,0"/>
+        <Image x:Name="imgRating2" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top" Width="159" Margin="820,252,0,0"/>
+        <Label x:Name="lblWarning" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20,302,0,0" FontFamily="Trebuchet MS" FontSize="18"/>
+        <TextBlock x:Name="lblWunder" HorizontalAlignment="Left" Margin="308,293,0,0" TextWrapping="WrapWithOverflow" Text="TextBlock" VerticalAlignment="Top" Height="103" Width="671" FontSize="40"/>
 
 
     </Grid>

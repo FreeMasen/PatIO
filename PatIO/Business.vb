@@ -1,8 +1,9 @@
-﻿Imports System.Net
-Imports System.IO
-Imports System.Xml
+﻿Public Class Business
+    'This is the skeleton of a business object
+    'it stores the information that will be passed to the window's
+    'display elements
 
-Public Class Business
+    'this stores the name as a string
     Private _name As String
     Public Property name As String
         Get
@@ -12,6 +13,7 @@ Public Class Business
             _name = value
         End Set
     End Property
+    'this stores the location as a string
     Private _location As String
     Public Property location As String
         Get
@@ -21,6 +23,10 @@ Public Class Business
             _location = value
         End Set
     End Property
+    'this stores the rating url as a string
+    'I would like to change this to be an image
+    'with a method that would turn the image url
+    'into a picture as it currently does in MainWindow
     Private _rating As String
     Public Property rating As String
         Get
@@ -30,13 +36,9 @@ Public Class Business
             _rating = value
         End Set
     End Property
-
-    Public Sub buildBusiness(name As String, location As String, rating As String, image As String)
-        Me.name = name
-        Me.location = location
-        Me.rating = rating
-        Me.bizImage = image
-    End Sub
+    'this stores the image url as a string
+    'I would also like to create a method to 
+    'modify the url to an actuall image
     Private _image As String
     Public Property bizImage As String
         Get
@@ -46,5 +48,14 @@ Public Class Business
             _image = value
         End Set
     End Property
+    'this is the method that defines how a business is built
+    Public Sub buildBusiness(name As String, location As String, rating As String, image As String)
+        Me.name = name
+        Me.location = location
+        Me.rating = rating
+        Me.bizImage = image
+    End Sub
+
+
 
 End Class
