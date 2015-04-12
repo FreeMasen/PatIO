@@ -87,9 +87,9 @@
             'set the image to the newly defined image source
             imgRating.Source = ratingSource
 
-            Dim picture As New Uri(results(0).bizImage.ToString, UriKind.Absolute)
-            Dim imgsource As ImageSource = New BitmapImage(picture)
-            imgBiz1.Source = imgsource
+            'Dim picture As New Uri(results(0).bizImage.ToString, UriKind.Absolute)
+            'Dim imgsource As ImageSource = New BitmapImage(picture)
+            imgBiz1.Source = results(0).bizImage
 
             '---------------------------------------------------
 
@@ -103,9 +103,9 @@
             Dim ratingSource1 As ImageSource = New BitmapImage(rating1)
             imgRating1.Source = ratingSource1
 
-            Dim picture1 As New Uri(results(1).bizImage.ToString, UriKind.Absolute)
-            Dim imgsource1 As ImageSource = New BitmapImage(picture1)
-            imgBiz2.Source = imgsource1
+            'Dim picture1 As New Uri(results(1).bizImage.ToString, UriKind.Absolute)
+            'Dim imgsource1 As ImageSource = New BitmapImage(picture1)
+            imgBiz2.Source = results(1).bizImage
 
             'and again for business 3
             lblName3.Content = results(2).name.ToString
@@ -114,9 +114,9 @@
             Dim ratingSource2 As ImageSource = New BitmapImage(rating2)
             imgRating2.Source = ratingSource2
 
-            Dim picture2 As New Uri(results(2).bizImage.ToString, UriKind.Absolute)
-            Dim imgsource2 As ImageSource = New BitmapImage(picture2)
-            imgBiz3.Source = imgsource2
+            'Dim picture2 As New Uri(results(2).bizImage.ToString, UriKind.Absolute)
+            'Dim imgsource2 As ImageSource = New BitmapImage(picture2)
+            imgBiz3.Source = results(2).bizImage
 
             'this changes the size of the window to make the form elements
             'visible
@@ -165,7 +165,7 @@
                         'from the node lists, by using the number variable 0, 1 or 2
                         'this will ensure we are pulling the same business information
                         'relying on how xml is structured
-                        business.buildBusiness(yelpinfo.names(number).InnerText, yelpinfo.locations(number).InnerText, yelpinfo.ratings(number).InnerText, yelpinfo.images(number).InnerText)
+                        business.buildBusiness(yelpinfo.names(number).InnerText, yelpinfo.locations(number).InnerText, business.convertImage(yelpinfo.ratings(number).InnerText), business.convertImage((yelpinfo.images(number).InnerText)))
                         results.add(business)
                     Next
                     setLabels()
