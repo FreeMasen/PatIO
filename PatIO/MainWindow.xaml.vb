@@ -4,6 +4,15 @@
     Dim results As New Businesses
 
 
+    'this solution was found on vbforums.com as a way to create
+    'a background work in a WPF program, it will be leveraged as an
+    'event method.
+    'http://www.vbforums.com/showthread.php?577900-Backgroundworker-in-WPF
+    Private WithEvents bkgroundWorker As New ComponentModel.BackgroundWorker
+    Private WithEvents bkgroundWeather As New ComponentModel.BackgroundWorker
+
+
+
     Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         'when the window opens, set the dropdowns
         setDropDowns()
@@ -87,9 +96,9 @@
             'set the image to the newly defined image source
             imgRating.Source = ratingSource
 
-            'Dim picture As New Uri(results(0).bizImage.ToString, UriKind.Absolute)
-            'Dim imgsource As ImageSource = New BitmapImage(picture)
-            imgBiz1.Source = results(0).bizImage
+            Dim picture As New Uri(results(0).bizImage.ToString, UriKind.Absolute)
+            Dim imgsource As ImageSource = New BitmapImage(picture)
+            imgBiz1.Source = imgsource
 
             '---------------------------------------------------
 
@@ -103,9 +112,9 @@
             Dim ratingSource1 As ImageSource = New BitmapImage(rating1)
             imgRating1.Source = ratingSource1
 
-            'Dim picture1 As New Uri(results(1).bizImage.ToString, UriKind.Absolute)
-            'Dim imgsource1 As ImageSource = New BitmapImage(picture1)
-            imgBiz2.Source = results(1).bizImage
+            Dim picture1 As New Uri(results(1).bizImage.ToString, UriKind.Absolute)
+            Dim imgsource1 As ImageSource = New BitmapImage(picture1)
+            imgBiz2.Source = imgsource1
 
             'and again for business 3
             lblName3.Content = results(2).name.ToString
@@ -114,9 +123,9 @@
             Dim ratingSource2 As ImageSource = New BitmapImage(rating2)
             imgRating2.Source = ratingSource2
 
-            'Dim picture2 As New Uri(results(2).bizImage.ToString, UriKind.Absolute)
-            'Dim imgsource2 As ImageSource = New BitmapImage(picture2)
-            imgBiz3.Source = results(2).bizImage
+            Dim picture2 As New Uri(results(2).bizImage.ToString, UriKind.Absolute)
+            Dim imgsource2 As ImageSource = New BitmapImage(picture2)
+            imgBiz3.Source = imgsource2
 
             'this changes the size of the window to make the form elements
             'visible
@@ -131,65 +140,82 @@
         End If
     End Sub
 
-    'when the user clicks submit
-    Private Sub btnSubmit_Click(sender As Object, e As RoutedEventArgs) Handles btnSubmit.Click
+    Private Sub bkgroundWorker_DoWork(sender As Object, e As ComponentModel.DoWorkEventArgs) Handles bkgroundWorker.DoWork
         results.Clear()
         If My.Computer.Network.IsAvailable = True Then
-            If txtCity.Text.Length > 0 And cboState.SelectedIndex > -1 And cboDate.SelectedIndex > -1 Then
-                Try
-                    wunder.url(txtCity.Text, cboState.SelectedItem.ToString)
-                    wunder.getQueryInfo()
-                    wunder.setWeather(wunder.getDayInfo(cboDate.SelectedIndex))
-
-                Catch ex As Exception
-
-                End Try
-            End If
             Try
-                'uses the yelpbot object's method get xml, to generate the xml information
-                'this needs a url as a variable, so we use the yelpbot objects buildurl method
-                'to take the user informaiton from the city txt box and the state combobox
-                'and the information from the wunderbot
-
-                yelpinfo.getXML(yelpinfo.buildURL(txtCity.Text, cboState.SelectedItem.ToString, wunder.outside))
-                'now that we have an xml document saved, we can set the yelpbot xmlnodelist variables
+                Dim url As String = CStr(e.Argument)
+                yelpinfo.getXML(url)
                 yelpinfo.setNodeLists()
-
-                If txtCity.Text.Length > 0 And cboDate.SelectedIndex > -1 And cboState.SelectedIndex > -1 Then
-                    'loop 3 times, once for each busines and hold the number
-                    'in the number varable
-                    For number As Integer = 0 To 2
-                        'set a temporary business object
-                        Dim business As New Business
-                        'pass into that tempory object the yelp information
-                        'from the node lists, by using the number variable 0, 1 or 2
-                        'this will ensure we are pulling the same business information
-                        'relying on how xml is structured
-                        business.buildBusiness(yelpinfo.names(number).InnerText, yelpinfo.locations(number).InnerText, business.convertImage(yelpinfo.ratings(number).InnerText), business.convertImage((yelpinfo.images(number).InnerText)))
-                        results.add(business)
-                    Next
-                    setLabels()
-                ElseIf txtCity.Text.Length = 0 Or IsNumeric(txtCity.Text) = True Then
-                    lblWarning.Content = "Please enter a valid city"
-                    Me.Width = 304
-                ElseIf cboDate.SelectedIndex < 0 Then
-                    lblWarning.Content = "Please choose a date"
-                    Me.Width = 304
-                ElseIf cboState.SelectedIndex < 0 Then
-                    lblWarning.Content = "Please choose a state"
-                    Me.Width = 304
-                End If
+                For counter As Integer = 0 To 2
+                    Dim business As New Business
+                    business.buildBusiness(yelpinfo.names(counter).InnerText, yelpinfo.locations(counter).InnerText, _
+                                           yelpinfo.ratings(counter).InnerText, _
+                                           yelpinfo.images(counter).InnerText)
+                    results.add(business)
+                Next
             Catch ex As Exception
-                lblWarning.Content = "Is your city/State combo valid?"
-                Me.Width = 304
+
             End Try
         Else
             lblWarning.Content = "are you online?"
             Me.Width = 304
         End If
+    End Sub
+
+    Private Sub bkgroundWorker_RunWorkerCompleted(sender As Object, e As ComponentModel.RunWorkerCompletedEventArgs) Handles bkgroundWorker.RunWorkerCompleted
+        If e.Error Is Nothing Then
+            setLabels()
+        Else
+            lblWarning.Content = e.Error.ToString
+        End If
+    End Sub
+
+    'when the user clicks submit
+    Private Sub btnSubmit_Click(sender As Object, e As RoutedEventArgs) Handles btnSubmit.Click
+        If bkgroundWeather.IsBusy = False Then
+            lblWarning.Content = "Getting Weather"
+            If txtCity.Text.Length > 0 And cboDate.SelectedIndex > -1 And cboState.SelectedIndex > -1 Then
+                wunder.url(txtCity.Text, CStr(cboState.SelectedValue))
+                Dim url As String = wunder.queryurl
+                bkgroundWeather.RunWorkerAsync(url)
+                'If bkgroundWorker.IsBusy = False Then
+                '    Dim yelp As String = yelpinfo.buildURL(txtCity.Text, CStr(cboState.SelectedValue), wunder.outside)
+                '    bkgroundWorker.RunWorkerAsync(yelp)
+                'End If
+            ElseIf txtCity.Text.Length = 0 Or IsNumeric(txtCity.Text) = True Then
+                lblWarning.Content = "Please enter a valid city"
+                Me.Width = 304
+            ElseIf cboDate.SelectedIndex < 0 Then
+                lblWarning.Content = "Please choose a date"
+                Me.Width = 304
+            ElseIf cboState.SelectedIndex < 0 Then
+                lblWarning.Content = "Please choose a state"
+                Me.Width = 304
+            End If
+        End If
+    End Sub
 
 
 
+    Private Sub bkgroundWeather_DoWork(sender As Object, e As ComponentModel.DoWorkEventArgs) Handles bkgroundWeather.DoWork
+        If My.Computer.Network.IsAvailable = True Then
+            Try
+                wunder.getQueryInfo()
+            Catch ex As Exception
 
+            End Try
+        End If
+    End Sub
+
+    Private Sub bkgroundWeather_RunWorkerCompleted(sender As Object, e As ComponentModel.RunWorkerCompletedEventArgs) Handles bkgroundWeather.RunWorkerCompleted
+        If e.Error Is Nothing Then
+            wunder.setWeather(wunder.getDayInfo(cboDate.SelectedIndex))
+        End If
+        If bkgroundWorker.IsBusy = False Then
+            lblWarning.Content = "Getting restaurants"
+            Dim yelp As String = yelpinfo.buildURL(txtCity.Text, CStr(cboState.SelectedValue), wunder.outside)
+            bkgroundWorker.RunWorkerAsync(yelp)
+        End If
     End Sub
 End Class
