@@ -2,7 +2,6 @@
     Dim yelpinfo As New Yelpbot
     Dim wunder As New Wunderbot
     Dim results As New Businesses
-    Dim erro As String
     'this solution was found on vbforums.com as a way to create
     'a background work in a WPF program, it will be leveraged as an
     'event method.
@@ -176,10 +175,6 @@
         End If
     End Sub
 
-    Private Sub bkgroundWeather_Disposed(sender As Object, e As EventArgs) Handles bkgroundWeather.Disposed
-        lblWarning.Content = erro
-    End Sub
-
     Private Sub bkgroundWeather_DoWork(sender As Object, e As ComponentModel.DoWorkEventArgs) Handles bkgroundWeather.DoWork
         'if the computer is connected to a network
         If My.Computer.Network.IsAvailable = True Then
@@ -187,32 +182,23 @@
             Try
                 wunder.getQueryInfo()
             Catch ex As Exception
-                lblWarning.Content = ex.ToString
+
             End Try
-            If wunder.queryResults Is Nothing Then
-                erro = "City is invalid"
-                bkgroundWeather.Dispose()
-            End If
         End If
     End Sub
 
     Private Sub bkgroundWeather_RunWorkerCompleted(sender As Object, e As ComponentModel.RunWorkerCompletedEventArgs) Handles bkgroundWeather.RunWorkerCompleted
         'check if there was an error getting the weather info
         If e.Error Is Nothing Then
-            If wunder.queryResults(0) Is Nothing Then
-                lblWarning.Content = "City did not return results"
-
-            Else
+            If My.Computer.Network.IsAvailable = True Then
                 Try
                     'if not then set the weather data into the arraylists for 
                     'us to use
                     wunder.setWeather(wunder.getDayInfo(cboDate.SelectedIndex))
                 Catch ex As Exception
-                    lblWarning.Content = "City didn't return weather data"
+                    lblWarning.Content = ex.ToString
                     Return
                 End Try
-
-
                 'check the the yelp background worker is busy
                 If bkgroundWorker.IsBusy = False Then
                     'if not then update the warning label to tell the user
@@ -224,10 +210,9 @@
                     'run the yelp background worker and pass it the yelp url
                     bkgroundWorker.RunWorkerAsync(yelp)
                 End If
+            Else
+                lblWarning.Content = "Please connect to the internet"
             End If
-        else
-                'otherwise show us what the error was
-                lblWarning.Content = e.Error.ToString
         End If
     End Sub
 
@@ -242,23 +227,8 @@
                 Dim url As String = CStr(e.Argument)
                 'use this to get the xml data
                 yelpinfo.getXML(url)
-                'capture that data into the array lists
-                yelpinfo.setNodeLists()
-                'for 3 loops
-                For counter As Integer = 0 To 2
-                    'create a business as a new business
-                    Dim business As New Business
-                    'use the build business method to create a business object
-                    'we use the counter variable to make sure we are on the same 
-                    'response in the xml document
-                    business.buildBusiness(yelpinfo.names(counter).InnerText, yelpinfo.locations(counter).InnerText, _
-                                           yelpinfo.ratings(counter).InnerText, _
-                                           yelpinfo.images(counter).InnerText)
-                    'add this business to an array list
-                    results.add(business)
-                Next
             Catch ex As Exception
-                erro = ex.ToString
+                Return
             End Try
         Else
             lblWarning.Content = "are you online?"
@@ -267,11 +237,24 @@
     End Sub
 
     Private Sub bkgroundWorker_RunWorkerCompleted(sender As Object, e As ComponentModel.RunWorkerCompletedEventArgs) Handles bkgroundWorker.RunWorkerCompleted
-        If erro <> Nothing Then
-            lblWarning.Content = erro
-        End If
-        'check that the yelp background worker has finished
         If e.Error Is Nothing Then
+            'capture that data into the array lists
+            yelpinfo.setNodeLists()
+            'for 3 loops
+            For counter As Integer = 0 To 2
+                'create a business as a new business
+                Dim business As New Business
+                'use the build business method to create a business object
+                'we use the counter variable to make sure we are on the same 
+                'response in the xml document
+                business.buildBusiness(yelpinfo.names(counter).InnerText, yelpinfo.locations(counter).InnerText, _
+                                       yelpinfo.ratings(counter).InnerText, _
+                                       yelpinfo.images(counter).InnerText)
+                'add this business to an array list
+                results.add(business)
+            Next
+            'check that the yelp background worker has finished
+
             'set the labels with the now completed data
             setLabels()
         Else
