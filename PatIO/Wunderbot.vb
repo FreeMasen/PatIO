@@ -89,11 +89,6 @@ Public Class Wunderbot
             'test information
             Dim day1tempnode As XmlNode = weather.SelectSingleNode("//celsius")
 
-            'define Xpath
-            Dim thisXpath As String = "/response/simpleforcast/forecastdays/*"
-            'a secondary xpath for further extending into the tree
-            Dim furtherXpath As String = "/response/simpleforcast/forecastdays/"
-
             'creates an arraylist full of xmlnodelists, each xmlnodelist containing
             'all of the information for one condition, over 10 days.
 

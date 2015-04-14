@@ -58,7 +58,11 @@
                 </TransformGroup>
             </ComboBox.RenderTransform>
         </ComboBox>
-        <Button x:Name="btnSubmit" Content="Should we sit outside?" VerticalAlignment="Top" Width="222" Margin="36,351,0,0" Height="45" FontFamily="Trebuchet MS" FontSize="20" Background="#E538E5DB" Foreground="#FF494949" BorderBrush="White" HorizontalAlignment="Left"/>
+        <Button x:Name="btnSubmit" Content="Should we sit outside?" VerticalAlignment="Top" Width="222" Margin="36,351,0,0" Height="45" FontFamily="Trebuchet MS" FontSize="20" Background="#E538E5DB" Foreground="#FF494949" BorderBrush="White" HorizontalAlignment="Left" IsDefault="True">
+            <Button.BindingGroup>
+                <BindingGroup/>
+            </Button.BindingGroup>
+        </Button>
         <Label Content="First Pick" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="308,33,0,0" FontSize="18" FontFamily="Trebuchet MS" Foreground="#FF494949"/>
         <Label x:Name="lblName1" Content="Business 1 Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="308,167,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
         <Label x:Name="lblAddress1" Content="Business 1 Address" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="308,216,0,0" FontFamily="Trebuchet MS" FontSize="18" Foreground="#FF494949"/>
