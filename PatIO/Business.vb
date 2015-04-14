@@ -27,41 +27,41 @@
     'I would like to change this to be an image
     'with a method that would turn the image url
     'into a picture as it currently does in MainWindow
-    Private _rating As String
-    Public Property rating As String
+    Private _rating As ImageSource
+    Public Property rating As ImageSource
         Get
             Return _rating
         End Get
-        Set(value As String)
+        Set(value As ImageSource)
             _rating = value
         End Set
     End Property
     'this stores the image url as a string
     'I would also like to create a method to 
     'modify the url to an actuall image
-    Private _image As String
-    Public Property bizImage As String
+    Private _image As ImageSource
+    Public Property bizImage As ImageSource
         Get
             Return _image
         End Get
-        Set(value As String)
+        Set(value As ImageSource)
             _image = value
         End Set
     End Property
     'this is the method that defines how a business is built
-    Public Sub buildBusiness(name As String, location As String, rating As String, image As String)
+    Public Sub buildBusiness(name As String, location As String, rating As ImageSource, image As ImageSource)
         Me.name = name
         Me.location = location
         Me.rating = rating
         Me.bizImage = image
     End Sub
 
-    'Public Function convertImage(imgURL As String) As ImageSource
-    '    Dim imageURL As New Uri(imgURL, UriKind.Absolute)
-    '    'convert the uri to an image source
-    '    Dim imgSource As ImageSource = New BitmapImage(imageURL)
+    Public Function convertImage(imgURL As String) As ImageSource
+    Dim imageURL As New Uri(imgURL, UriKind.Absolute)
+    'convert the uri to an image source
+    Dim imgSource As ImageSource = New BitmapImage(imageURL)
 
-    '    Return imgSource
-    'End Function
+        Return imgSource
+    End Function
 
 End Class

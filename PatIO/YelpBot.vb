@@ -6,8 +6,11 @@ Imports SimpleOAuth
 Imports System.Xml
 
 'This object is used to pull all of the xml information from yelp
+'and store it as a set of xmlnodelist objects
 
 Public Class Yelpbot
+    'this variable stores the xmldocument informaiton
+    Private xml As XmlDocument = New XmlDocument
 
     'this variable stores xml nodes for the names of businesses
     Private _names As XmlNodeList
@@ -53,9 +56,29 @@ Public Class Yelpbot
         End Set
     End Property
 
-    'this variable stores the xmldocument informaiton
-    Dim xml As XmlDocument = New XmlDocument
+    'this function takes information from the user and builds a string formatted
+    'properly for the api call at yelp
+    Public Function buildURL(city As String, state As String, weather As Boolean) As String
 
+        'sets a string variable
+        Dim searchLocation As String
+
+        'checks if the user entered any " " characters
+        If city.Contains(" ") Then
+            'if there are spaces replace them with the "+" character
+            city.Replace(" ", "+")
+        End If
+        'format the user input with the city+state
+        searchLocation = String.Format("{0}+{1}", city, state)
+        If weather = True Then
+            'use the search location string to add the location to the URL            
+            'and return it to the user                                                ↓
+            Return String.Format("http://api.yelp.com/v2/search?term=summer&location={0}&category_filter=restaurants&category=bars&limit=10&output=xml", searchLocation)
+            '                                                                         ↑
+        ElseIf weather = False Then '                                                 ↓
+            Return String.Format("http://api.yelp.com/v2/search?term=winter&location={0}&category_filter=restaurants&category=bars&limit=10&output=xml", searchLocation)
+        End If '                                                                      ↑
+    End Function
 
     'this method utilizes the simpleOauth library to build an oauth request
     Public Sub getXML(ByVal searchURL As String)
@@ -88,51 +111,23 @@ Public Class Yelpbot
 
         'closes the connection to the website
         reader.Close()
+
         'saves a copy of the xmlDocument for debugging
         xml.Save("yelpexample")
     End Sub
-
-    'this function takes information from the user and builds a string formatted
-    'properly for the api call at yelp
-    Public Function buildURL(city As String, state As String, weather As Boolean) As String
-
-        'sets a string variable
-        Dim searchLocation As String
-
-        'checks if the user entered any " " characters
-        If city.Contains(" ") Then
-            'if there are spaces replace them with the "+" character
-            city.Replace(" ", "+")
-        End If
-        'format the user input with the city+state
-        searchLocation = String.Format("{0}+{1}", city, state)
-        If weather = True Then
-            'use the search location string to add the location to the URL            
-            'and return it to the user                                                ↓
-            Return String.Format("http://api.yelp.com/v2/search?term=summer&location={0}&category_filter=restaurants&category=bars&limit=10&output=xml", searchLocation)
-            '                                                                         ↑
-        ElseIf weather = False Then '                                                 ↓
-            Return String.Format("http://api.yelp.com/v2/search?term=winter&location={0}&category_filter=restaurants&category=bars&limit=10&output=xml", searchLocation)
-        End If '                                                                      ↑
-    End Function
 
     'this pulls the information from the xml document and stores
     'the nodes that I want to use
     Public Sub setNodeLists()
         'captures the <name> nodes
-
         names = xml.SelectNodes("//name")
         'captures the <address> nodes
-
         locations = xml.SelectNodes("//address")
         'captures the <rating_img_url> nodes, this is an image
         'of stars that are either filled, half filled or empty
         ratings = xml.SelectNodes("//rating_img_url")
         'captures the <image_url> nodes
         images = xml.SelectNodes("//image_url")
-
-
     End Sub
-
 End Class
 

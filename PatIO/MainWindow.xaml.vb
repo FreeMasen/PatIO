@@ -80,52 +80,22 @@
             lblName1.Content = results(0).name.ToString
             'set the address one label to business 1 name
             lblAddress1.Content = results(0).location.ToString
-
-            'I would like to encapsulate this into the business object
-            'however, because we are using background workers and 
-            'a WPF format, there is a confilct regarding what
-            'thread the information that we are asking for is in
-            'so by placing the logic here in the form thread it 
-            'processes correctly. Looking for a solution soon
-            '---------------------------------------------------
-
-            'set this variable to a new uri 
-            Dim rating As New Uri(results(0).rating.ToString, UriKind.Absolute)
-            'convert the uri to an image source
-            Dim ratingSource As ImageSource = New BitmapImage(rating)
-            'set the image to the newly defined image source
-            imgRating.Source = ratingSource
-
-            Dim picture As New Uri(results(0).bizImage.ToString, UriKind.Absolute)
-            Dim imgsource As ImageSource = New BitmapImage(picture)
-            imgBiz1.Source = imgsource
-
-            '---------------------------------------------------
-
-
+            'set the rating one image to the business 1 rating
+            imgRating.Source = results(0).rating
+            'set the image one image to the business 1 bizImage
+            imgBiz1.Source = results(0).bizImage
 
             'same as above for business 2
             lblName2.Content = results(1).name.ToString
             lblAddress2.Content = results(1).location.ToString
-
-            Dim rating1 As New Uri(results(1).rating.ToString, UriKind.Absolute)
-            Dim ratingSource1 As ImageSource = New BitmapImage(rating1)
-            imgRating1.Source = ratingSource1
-
-            Dim picture1 As New Uri(results(1).bizImage.ToString, UriKind.Absolute)
-            Dim imgsource1 As ImageSource = New BitmapImage(picture1)
-            imgBiz2.Source = imgsource1
+            imgRating1.Source = results(1).rating
+            imgBiz2.Source = results(1).bizImage
 
             'and again for business 3
             lblName3.Content = results(2).name.ToString
             lblAddress3.Content = results(2).location.ToString
-            Dim rating2 As New Uri(results(2).rating.ToString, UriKind.Absolute)
-            Dim ratingSource2 As ImageSource = New BitmapImage(rating2)
-            imgRating2.Source = ratingSource2
-
-            Dim picture2 As New Uri(results(2).bizImage.ToString, UriKind.Absolute)
-            Dim imgsource2 As ImageSource = New BitmapImage(picture2)
-            imgBiz3.Source = imgsource2
+            imgRating2.Source = results(2).rating
+            imgBiz3.Source = results(2).bizImage
 
             'this changes the size of the window to make the form elements
             'visible
@@ -143,7 +113,6 @@
             lblWarning.Content = ""
         End If
     End Sub
-
 
     'when the user clicks submit
     Private Sub btnSubmit_Click(sender As Object, e As RoutedEventArgs) Handles btnSubmit.Click
@@ -179,24 +148,24 @@
         'if the computer is connected to a network
         If My.Computer.Network.IsAvailable = True Then
             'get the weather based on the weather url that was built it the click event
-            Try
-                wunder.getQueryInfo()
-            Catch ex As Exception
-
-            End Try
+            wunder.getQueryInfo()
         End If
     End Sub
 
     Private Sub bkgroundWeather_RunWorkerCompleted(sender As Object, e As ComponentModel.RunWorkerCompletedEventArgs) Handles bkgroundWeather.RunWorkerCompleted
         'check if there was an error getting the weather info
         If e.Error Is Nothing Then
+            'if not check again that the computer is connected to a 
+            'network
             If My.Computer.Network.IsAvailable = True Then
                 Try
-                    'if not then set the weather data into the arraylists for 
+                    'if so then set the weather data into the arraylists for 
                     'us to use
                     wunder.setWeather(wunder.getDayInfo(cboDate.SelectedIndex))
                 Catch ex As Exception
-                    lblWarning.Content = ex.ToString
+                    'if the weather search failed update the warining lable
+                    'to tell the user that the city is not vaild
+                    lblWarning.Content = "City is invalid"
                     Return
                 End Try
                 'check the the yelp background worker is busy
@@ -228,6 +197,7 @@
                 'use this to get the xml data
                 yelpinfo.getXML(url)
             Catch ex As Exception
+                'if there is an issue, end the work
                 Return
             End Try
         Else
@@ -248,16 +218,15 @@
                 'we use the counter variable to make sure we are on the same 
                 'response in the xml document
                 business.buildBusiness(yelpinfo.names(counter).InnerText, yelpinfo.locations(counter).InnerText, _
-                                       yelpinfo.ratings(counter).InnerText, _
-                                       yelpinfo.images(counter).InnerText)
+                                       business.convertImage(yelpinfo.ratings(counter).InnerText), _
+                                       business.convertImage(yelpinfo.images(counter).InnerText))
                 'add this business to an array list
                 results.add(business)
             Next
-            'check that the yelp background worker has finished
-
             'set the labels with the now completed data
             setLabels()
         Else
+            'if there was an error, update the warning label
             lblWarning.Content = e.Error.ToString
         End If
     End Sub
