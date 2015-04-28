@@ -1,4 +1,4 @@
-﻿Class MainWindow 
+﻿Class MainWindow
     Dim yelpinfo As New Yelpbot
     Dim wunder As New Wunderbot
     Dim results As New Businesses
@@ -212,20 +212,21 @@
             yelpinfo.setNodeLists()
             'for 3 loops
             For counter As Integer = 0 To 2
-                'create a business as a new business
-                Dim business As New Business
-                'use the build business method to create a business object
+                'use the business constructor method to create a business object
                 'we use the counter variable to make sure we are on the same 
                 'response in the xml document
-                business.buildBusiness(yelpinfo.names(counter).InnerText, yelpinfo.locations(counter).InnerText, _
-                                       business.convertImage(yelpinfo.ratings(counter).InnerText), _
-                                       business.convertImage(yelpinfo.images(counter).InnerText))
+                Dim Biz As Business
+                Biz = New Business(yelpinfo.names(counter).InnerText, yelpinfo.locations(counter).InnerText, _
+                                       Business.convertImage(yelpinfo.ratings(counter).InnerText), _
+                                       Business.convertImage(yelpinfo.images(counter).InnerText))
+
                 'add this business to an array list
-                results.add(business)
+                results.add(Biz)
             Next
             'set the labels with the now completed data
             setLabels()
         Else
+
             'if there was an error, update the warning label
             lblWarning.Content = e.Error.ToString
         End If

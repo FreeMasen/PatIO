@@ -9,52 +9,18 @@ Imports System.Xml
 'and store it as a set of xmlnodelist objects
 
 Public Class Yelpbot
-    'this variable stores the xmldocument informaiton
+    'this variable stores the xmldocument that can only be 
+    'used by this object
     Private xml As XmlDocument = New XmlDocument
 
-    'this variable stores xml nodes for the names of businesses
-    Private _names As XmlNodeList
+    'these properties define what can be used by other parts of the program
     Public Property names As XmlNodeList
-        Get
-            Return _names
-        End Get
-        Set(value As XmlNodeList)
-            _names = value
-        End Set
-    End Property
 
-    'this variable stores the xml nodes for the address of businesses
-    Private _locations As XmlNodeList
     Public Property locations As XmlNodeList
-        Get
-            Return _locations
-        End Get
-        Set(value As XmlNodeList)
-            _locations = value
-        End Set
-    End Property
 
-    'this variable stores the rating information for the address of businesses
-    Private _ratings As XmlNodeList
     Public Property ratings As XmlNodeList
-        Get
-            Return _ratings
-        End Get
-        Set(value As XmlNodeList)
-            _ratings = value
-        End Set
-    End Property
 
-    'this variable stores the image of businesses
-    Private _images As XmlNodeList
     Public Property images As XmlNodeList
-        Get
-            Return _images
-        End Get
-        Set(value As XmlNodeList)
-            _images = value
-        End Set
-    End Property
 
     'this function takes information from the user and builds a string formatted
     'properly for the api call at yelp
